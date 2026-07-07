@@ -13,6 +13,6 @@ public class HelloController {
 
     @GetMapping("/{name}")
     public String SayHello(@PathVariable String name){
-        return "hello %s at %s".formatted(name, LocalDateTime.now().toString());
+        return "hello %s at %d".formatted(name, LocalDateTime.now().toString());
     }
 }
