@@ -27,14 +27,14 @@ pipeline {
             }
         }
 
-        stage('Docker Build') {
+       /* stage('Docker Build') {
             steps {
                 // Builds the Docker image using the Dockerfile in the root workspace
                 sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
                 sh "docker build -t ${IMAGE_NAME}:latest ."
                 echo "Docker image ${IMAGE_NAME}:${IMAGE_TAG} created successfully."
             }
-        }
+        }*/
     }
 
     post {
