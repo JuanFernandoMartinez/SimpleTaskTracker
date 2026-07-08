@@ -1,21 +1,45 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'maven-3.9' // Must match Global Tool Configuration
+        jdk 'Java-17'     // Must match Global Tool Configuration
+    }
+
+    environment {
+        // Define your Docker image name and tag
+        IMAGE_NAME = 'my-springboot-app'
+        IMAGE_TAG  = "${BUILD_NUMBER}" // Uses Jenkins build number as tag
+    }
+
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                echo 'Building..'
+                git branch: 'main', url: 'https://github.com'
             }
         }
-        stage('Test') {
+
+        stage('Build & Test') {
             steps {
-                echo 'Testing..'
+                // Compiles, runs tests, and creates the JAR file
+                sh 'mvn clean package'
             }
         }
-        stage('Deploy') {
+
+        stage('Docker Build') {
             steps {
-                echo 'Deploying....'
+                // Builds the Docker image using the Dockerfile in the root workspace
+                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                sh "docker build -t ${IMAGE_NAME}:latest ."
+                echo "Docker image ${IMAGE_NAME}:${IMAGE_TAG} created successfully."
             }
         }
     }
+
+    post {
+    success {
+
+    archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+}
+}
 }
