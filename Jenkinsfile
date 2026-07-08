@@ -4,7 +4,7 @@ pipeline {
     tools {
         maven 'maven 3.9' // Must match Global Tool Configuration
         jdk 'Java-17'     // Must match Global Tool Configuration
-        docker 'main-docker'
+        dockerTool 'main-docker'
     }
 
     environment {
